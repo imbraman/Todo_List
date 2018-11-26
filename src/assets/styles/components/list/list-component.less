@@ -1,0 +1,96 @@
+app-task-list {
+  top: 60px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: @base-background-color;
+
+  .tasks-container {
+    &._mobile {
+      display: none;
+    }
+
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+
+    &_add-button {
+      color: white;
+      background: rgba(72, 171, 189, 0.32);
+      width: 100%;
+      text-align: center;
+      width: 100%;
+      transition-property: background-color;
+      transition-duration: 100ms;
+      margin: auto auto 0 auto;
+
+      &:hover {
+        background: rgba(72, 171, 189, 0.48);
+      }
+    }
+
+    &_header {
+      color: #f9f6f6;
+      width: 100%;
+      padding-top: 10px;
+      font-family: 'helvetica-light';
+      font-size: 18px;
+      text-align: center;
+      background: rgba(72, 171, 189, 0.56);
+      height: 30px;
+    }
+
+    .task {
+      margin: 10px;
+
+      &_wrapper {
+        flex: 1;
+        margin: 0 10px;
+        padding: 10px;
+        max-width: 900px;
+        width: 100%;
+      }
+    }
+
+    &._all {
+      background-color: rgba(118, 193, 186, 0.14);
+    }
+
+    &._today {
+      background-color: rgba(255, 255, 255, 0.2)
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  app-task-list {
+    .mat-tab{
+      height: 100vh !important;
+    }
+    .tasks-container {
+      display: none;
+      &_add-button {
+        position: fixed;
+        bottom: 0px;
+      }
+      &._mobile {
+        display: block;
+
+        .mat-tab-body-content {
+          transform: none;
+          display: flex;
+          width: 100%;
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+
+    }
+  }
+}

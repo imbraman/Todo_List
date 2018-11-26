@@ -1,0 +1,44 @@
+<mat-tab-group class="tasks-container _mobile" mat-stretch-tabs>
+  <mat-tab label="Todo Today">
+    <ng-container
+      *ngTemplateOutlet="todo">
+    </ng-container>
+  </mat-tab>
+  <mat-tab label="All Tasks">
+    <ng-container
+      *ngTemplateOutlet="all">
+    </ng-container>
+  </mat-tab>
+</mat-tab-group>
+
+<div class="tasks-container _todo">
+  <div class="tasks-container_header">Todo Today</div>
+  <ng-container
+    *ngTemplateOutlet="todo">
+  </ng-container>
+</div>
+<div class="tasks-container _all">
+  <div class="tasks-container_header">All Tasks</div>
+  <ng-container
+    *ngTemplateOutlet="all">
+  </ng-container>
+</div>
+<ng-template #all>
+  <div id="all" class="task_wrapper" dragula="MAIN">
+    <div  attr.id="{{list.id}}" class="task" *ngFor="let list of listItems['all']">
+      <mat-card class="task_description">{{list.description}}</mat-card>
+    </div>
+  </div>
+  <div class="tasks-container_add-button">
+    <mat-icon>add</mat-icon>
+  </div>
+</ng-template>
+
+<ng-template #todo>
+  <div id="todo" class="task_wrapper" dragula="MAIN">
+    <div attr.id="{{list.id}}" class="task" *ngFor="let list of listItems['todo']">
+      <mat-card class="task_description">{{list.description}}</mat-card>
+    </div>
+  </div>
+</ng-template>
+
