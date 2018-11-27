@@ -30,12 +30,15 @@ export class ListComponent implements OnInit {
       this.subs.add(this.dragulaService.drop('MAIN')
         .subscribe((el) => {
           // this actions I'm doing at least to make work approach with ng-templates
-          const elementId = el.el.id;
+          const elementId = el.el.querySelector('.task').id;
           this.listItems[el.target.id].push(this.listItems[el.source.id].find((item) => item.id === elementId));
           this.listItems[el.source.id] = this.listItems[el.source.id].filter((item) => item.id !== elementId);
-          console.log(this.listItems);
         })
       );
     });
+  }
+
+  addItem() {
+    this.listItems['all'].push(this.listService.createNewListItem());
   }
 }

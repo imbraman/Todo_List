@@ -1,0 +1,17 @@
+<mat-card attr.id="{{model.id}}" class="task" >
+  <mat-form-field class="task-description" [style.display]="model.isUnderEdit ? 'block' : 'none'" >
+    <input #inp matInput [(ngModel)]="model.description">
+  </mat-form-field>
+  <mat-card-content class="task-description" [style.display]="!model.isUnderEdit ? 'block' : 'none'">{{model.description}}</mat-card-content>
+  <mat-card-actions>
+    <button  *ngIf="model.isUnderEdit" (click)="saveField()" mat-button class="edit-button">
+      Save
+    </button>
+    <button *ngIf="!model.isUnderEdit" (click)="editField()" mat-button class="edit-button">
+      Edit
+    </button>
+    <button mat-button class="delete-button">
+      Delete
+    </button>
+  </mat-card-actions>
+</mat-card>
