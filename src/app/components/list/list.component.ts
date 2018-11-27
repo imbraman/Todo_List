@@ -34,13 +34,13 @@ export class ListComponent implements OnInit {
       this.subs.add(this.dragulaService.drop('MAIN')
         .subscribe((el) => {
           this._ngZone.run(() => {
-              // this actions I'm doing at least to make work approach with ng-templates
-              const elementId = el.el.querySelector('.task').id;
-              const element = this.listItems[el.source.id].find((item) => item.id === elementId);
-              element.listType = el.target.id === 'all' ? ListType.ALL : ListType.TODO;
-              this.listItems[el.target.id].push(this.listItems[el.source.id].find((item) => item.id === elementId));
-              this.listItems[el.source.id] = this.listItems[el.source.id].filter((item) => item.id !== elementId);
               if (el.source.id !== el.target.id) {
+                // this actions I'm doing at least to make work approach with ng-templates
+                const elementId = el.el.querySelector('.task').id;
+                const element = this.listItems[el.source.id].find((item) => item.id === elementId);
+                element.listType = el.target.id === 'all' ? ListType.ALL : ListType.TODO;
+                this.listItems[el.target.id].push(this.listItems[el.source.id].find((item) => item.id === elementId));
+                this.listItems[el.source.id] = this.listItems[el.source.id].filter((item) => item.id !== elementId);
                 this.saveList();
               }
             }
