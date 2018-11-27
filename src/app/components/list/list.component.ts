@@ -15,9 +15,10 @@ export class ListComponent implements OnInit {
   subs: Subscription;
 
   constructor(private listService: ListService, protected _ngZone: NgZone, private dragulaService: DragulaService) {
-    this.listService.getListItems().forEach((item) => {
-      console.log(item.status);
-      item.status === Status.WAITING ? this.listItems['all'].push(item) : this.listItems['todo'].push(item);
+    this.listService.getListItems().subscribe(items => {
+      items.forEach(item => {
+        item.status === Status.WAITING ? this.listItems['all'].push(item) : this.listItems['todo'].push(item);
+      });
     });
   }
 

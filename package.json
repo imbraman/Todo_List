@@ -27,6 +27,7 @@
     "material-icons": "^0.2.3",
     "ng2-dragula": "~2.1.1",
     "rxjs": "~6.3.3",
+    "uuid-generator-ts": "^1.0.3",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
