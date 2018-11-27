@@ -15,6 +15,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {MatInputModule} from '@angular/material/input';
 import { ListItemComponent } from './components/list/list-item/list-item.component';
 import {FormsModule} from '@angular/forms';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {FormsModule} from '@angular/forms';
     MatIconModule,
     MatTabsModule,
     MatInputModule,
+    MatRadioModule,
     MatButtonModule,
     DragulaModule.forRoot()
   ],

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
-import {ListItem, Status} from './model/list-item';
+import {ListItem} from './model/list-item';
 
 
 
@@ -10,8 +10,8 @@ import {ListItem, Status} from './model/list-item';
 export class FakeBackendInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const todoItems: ListItem[] = [
-      {id: '200ed4cb-2773-42af-8a60-3177c1a06fe4', description: 'create better list', status: Status.TODO},
-      {id: '200ed4cb-2773-42af-8a60-3177c1a06fe5', description: 'add some items', status: Status.TODO}
+      {id: '200ed4cb-2773-42af-8a60-3177c1a06fe4', description: 'create better list'},
+      {id: '200ed4cb-2773-42af-8a60-3177c1a06fe5', description: 'add some items'}
     ];
 
     const authHeader = request.headers.get('Authorization');

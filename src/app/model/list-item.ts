@@ -2,10 +2,10 @@ export class ListItem {
   id: string;
   description: string;
   isUnderEdit?: boolean;
-  status?: Status = Status.WAITING;
+  listType?: ListType;
 }
 
-export enum Status {
-  TODO,
-  WAITING
+export enum ListType {
+  ALL = 'all',
+  TODO = 'todo'
 }

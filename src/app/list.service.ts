@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {ListItem, Status} from './model/list-item';
+import {ListItem, ListType} from './model/list-item';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {environment} from '../environments/environment';
 import * as uuid from 'uuid';
 
@@ -20,6 +20,6 @@ export class ListService {
 
   createNewListItem(): ListItem {
     const id = uuid.v4();
-    return {id: id, description: '', status: Status.WAITING, isUnderEdit: true};
+    return {id: id, description: '', isUnderEdit: true, listType: ListType.ALL};
   }
 }

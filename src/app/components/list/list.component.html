@@ -25,7 +25,9 @@
 </div>
 <ng-template #all>
   <div id="all" class="dragula-container" dragula="MAIN">
-    <app-list-item [model]="list" *ngFor="let list of listItems['all']">
+    <app-list-item (deleteItem)="removeFromAllList($event)" [model]="list"
+                   (moveToTodoList)="moveItemToTodoList($event)"
+                   *ngFor="let list of listItems['all']">
 
     </app-list-item>
   </div>
@@ -36,10 +38,12 @@
 
 <ng-template #todo>
   <div id="todo" class="dragula-container" dragula="MAIN">
-    <app-list-item [model]="list" *ngFor="let list of listItems['todo']">
+    <app-list-item (markAsCompleted)="markItemAsCompleted($event)"
+                   (deleteItem)="removeFromTodoList($event)"
+                   [model]="list" *ngFor="let list of listItems['todo']">
     </app-list-item>
   </div>
-  <div class="tasks-container_footer-button">
+  <div (click)="markAllItemsAsCompleted()" class="tasks-container_footer-button">
     Mark all as completed
   </div>
 </ng-template>

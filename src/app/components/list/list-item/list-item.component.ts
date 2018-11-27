@@ -1,5 +1,5 @@
-import {Component, ElementRef, Input, OnInit, Renderer, ViewChild} from '@angular/core';
-import {ListItem} from '../../../model/list-item';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer, ViewChild} from '@angular/core';
+import {ListItem, ListType} from '../../../model/list-item';
 
 @Component({
   selector: 'app-list-item',
@@ -13,6 +13,14 @@ export class ListItemComponent implements OnInit {
   @Input()
   model: ListItem;
 
+  @Output()
+  public deleteItem: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+
+  @Output()
+  public markAsCompleted: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+
+  @Output()
+  public moveToTodoList: EventEmitter<ListItem> = new EventEmitter<ListItem>();
 
   @ViewChild('inp') inp: ElementRef;
 
@@ -30,6 +38,7 @@ export class ListItemComponent implements OnInit {
   saveField() {
     this.model.isUnderEdit = false;
   }
+
 
 
 }

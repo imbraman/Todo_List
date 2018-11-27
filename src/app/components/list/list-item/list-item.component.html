@@ -1,4 +1,9 @@
 <mat-card attr.id="{{model.id}}" class="task" >
+  <mat-radio-button class="task_left-action-button"  *ngIf="model.listType==='todo'" (click)="markAsCompleted.emit(model)">
+  </mat-radio-button>
+  <button class="task_left-action-button _move" mat-icon-button *ngIf="model.listType==='all'" (click)="moveToTodoList.emit(model)">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
   <mat-form-field class="task-description" [style.display]="model.isUnderEdit ? 'block' : 'none'" >
     <input #inp matInput [(ngModel)]="model.description">
   </mat-form-field>
@@ -10,7 +15,7 @@
     <button *ngIf="!model.isUnderEdit" (click)="editField()" mat-button class="edit-button">
       Edit
     </button>
-    <button mat-button class="delete-button">
+    <button (click)="deleteItem.emit(model)" mat-button class="delete-button">
       Delete
     </button>
   </mat-card-actions>
