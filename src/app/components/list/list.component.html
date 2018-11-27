@@ -24,9 +24,19 @@
   </ng-container>
 </div>
 <ng-template #all>
-  <div id="all" class="task_wrapper" dragula="MAIN">
-    <div  attr.id="{{list.id}}" class="task" *ngFor="let list of listItems['all']">
-      <mat-card class="task_description">{{list.description}}</mat-card>
+  <div id="all" class="dragula-container" dragula="MAIN">
+    <div attr.id="{{list.id}}" class="task" *ngFor="let list of listItems['all']">
+      <mat-card class="task_content">
+        <mat-card-content>{{list.description}}</mat-card-content>
+        <mat-card-actions>
+          <button mat-button class="edit-button">
+            Edit
+          </button>
+          <button mat-button class="delete-button">
+            Delete
+          </button>
+        </mat-card-actions>
+      </mat-card>
     </div>
   </div>
   <div class="tasks-container_add-button">
@@ -35,9 +45,19 @@
 </ng-template>
 
 <ng-template #todo>
-  <div id="todo" class="task_wrapper" dragula="MAIN">
+  <div id="todo" class="dragula-container" dragula="MAIN">
     <div attr.id="{{list.id}}" class="task" *ngFor="let list of listItems['todo']">
-      <mat-card class="task_description">{{list.description}}</mat-card>
+      <mat-card class="task_content">
+        <mat-card-content>{{list.description}}</mat-card-content>
+        <mat-card-actions>
+          <button mat-button class="edit-button">
+            Edit
+          </button>
+          <button mat-button class="delete-button">
+            Delete
+          </button>
+        </mat-card-actions>
+      </mat-card>
     </div>
   </div>
 </ng-template>

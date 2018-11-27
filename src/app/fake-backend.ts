@@ -10,7 +10,8 @@ import {ListItem, Status} from './model/list-item';
 export class FakeBackendInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const todoItems: ListItem[] = [
-      {id: '200ed4cb-2773-42af-8a60-3177c1a06fe4', description: 'create better list', status: Status.TODO}
+      {id: '200ed4cb-2773-42af-8a60-3177c1a06fe4', description: 'create better list', status: Status.TODO},
+      {id: '200ed4cb-2773-42af-8a60-3177c1a06fe5', description: 'add some items', status: Status.TODO}
     ];
 
     const authHeader = request.headers.get('Authorization');

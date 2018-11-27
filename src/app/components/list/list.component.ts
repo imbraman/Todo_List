@@ -3,6 +3,7 @@ import {ListItem, Status} from '../../model/list-item';
 import {ListService} from '../../list.service';
 import {DragulaService} from 'ng2-dragula';
 import {Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-task-list',
@@ -29,8 +30,9 @@ export class ListComponent implements OnInit {
       this.subs.add(this.dragulaService.drop('MAIN')
         .subscribe((el) => {
           // this actions I'm doing at least to make work approach with ng-templates
-          this.listItems[el.target.id].push(this.listItems[el.source.id].find((item) => item.id === el.el.id));
-          this.listItems[el.source.id] = this.listItems[el.source.id].filter((item) => item.id !== el.el.id);
+          const elementId = el.el.id;
+          this.listItems[el.target.id].push(this.listItems[el.source.id].find((item) => item.id === elementId));
+          this.listItems[el.source.id] = this.listItems[el.source.id].filter((item) => item.id !== elementId);
           console.log(this.listItems);
         })
       );

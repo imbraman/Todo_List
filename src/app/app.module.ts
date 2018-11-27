@@ -8,6 +8,7 @@ import {MatCardModule} from '@angular/material/card';
 import {DragulaModule} from 'ng2-dragula';
 import {MatIconModule} from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {fakeBackendProvider} from './fake-backend';
 import {HttpClientModule} from '@angular/common/http';
@@ -25,6 +26,7 @@ import {HttpClientModule} from '@angular/common/http';
     MatCardModule,
     MatIconModule,
     MatTabsModule,
+    MatButtonModule,
     DragulaModule.forRoot()
   ],
   providers: [fakeBackendProvider],

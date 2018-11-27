@@ -14,6 +14,13 @@ app-task-list {
       display: none;
     }
 
+    .dragula-container {
+      flex: 1;
+      margin: 0 10px;
+      padding: 10px;
+      width: 100%;
+    }
+
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -46,17 +53,6 @@ app-task-list {
       height: 30px;
     }
 
-    .task {
-      margin: 10px;
-
-      &_wrapper {
-        flex: 1;
-        margin: 0 10px;
-        padding: 10px;
-        max-width: 900px;
-        width: 100%;
-      }
-    }
 
     &._all {
       background-color: rgba(118, 193, 186, 0.14);
@@ -68,17 +64,58 @@ app-task-list {
   }
 }
 
+.task {
+  margin: 10px;
+
+
+  &_content {
+    display: flex !important;
+    align-items: baseline;
+
+    mat-card-content {
+      flex-grow: 4;
+      margin: 0px;
+    }
+
+    mat-card-actions {
+      button {
+        font-size: 12px;
+
+        &.edit-button {
+          color: #1c9294;
+          background: #1c92940d;
+        }
+
+        &.delete-button {
+          color: #af4f27;
+          background: #af4f270f;
+        }
+      }
+
+      display: flex;
+      font-size: 10px;
+      margin: 0px;
+      padding: 0px;
+      margin-right: -8px;
+    }
+  }
+
+}
+
 @media (max-width: 767px) {
   app-task-list {
-    .mat-tab{
+    .mat-tab {
       height: 100vh !important;
     }
+
     .tasks-container {
       display: none;
+
       &_add-button {
         position: fixed;
         bottom: 0px;
       }
+
       &._mobile {
         display: block;
 
