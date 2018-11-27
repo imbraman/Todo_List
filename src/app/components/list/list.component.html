@@ -40,6 +40,7 @@
   <div id="todo" class="dragula-container" dragula="MAIN">
     <app-list-item (markAsCompleted)="markItemAsCompleted($event)"
                    (deleteItem)="removeFromTodoList($event)"
+                   (saveItem)="saveList()"
                    [model]="list" *ngFor="let list of listItems['todo']">
     </app-list-item>
   </div>

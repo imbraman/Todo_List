@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer, ViewChild} from '@angular/core';
-import {ListItem, ListType} from '../../../model/list-item';
+import {ListItemModel, ListType} from '../../../model/list-item.model';
 
 @Component({
   selector: 'app-list-item',
@@ -11,16 +11,19 @@ export class ListItemComponent implements OnInit {
   }
 
   @Input()
-  model: ListItem;
+  model: ListItemModel;
 
   @Output()
-  public deleteItem: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+  public deleteItem: EventEmitter<ListItemModel> = new EventEmitter<ListItemModel>();
 
   @Output()
-  public markAsCompleted: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+  public saveItem: EventEmitter<ListItemModel> = new EventEmitter<ListItemModel>();
 
   @Output()
-  public moveToTodoList: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+  public markAsCompleted: EventEmitter<ListItemModel> = new EventEmitter<ListItemModel>();
+
+  @Output()
+  public moveToTodoList: EventEmitter<ListItemModel> = new EventEmitter<ListItemModel>();
 
   @ViewChild('inp') inp: ElementRef;
 
@@ -32,13 +35,14 @@ export class ListItemComponent implements OnInit {
 
   editField() {
     this.model.isUnderEdit = true;
-    this.renderer.invokeElementMethod(this.inp.nativeElement, 'focus');
+    // for some reason it stopped working without using setTimeout, so I've putted it to the end of actions stack
+    setTimeout(() => this.renderer.invokeElementMethod(this.inp.nativeElement, 'focus'), );
   }
 
   saveField() {
     this.model.isUnderEdit = false;
+    this.saveItem.emit(this.model);
   }
-
 
 
 }

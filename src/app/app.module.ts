@@ -10,12 +10,13 @@ import {MatIconModule} from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatButtonModule} from '@angular/material/button';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {fakeBackendProvider} from './fake-backend';
+import {fakeBackendProvider} from './services/fake-backend';
 import {HttpClientModule} from '@angular/common/http';
 import {MatInputModule} from '@angular/material/input';
-import { ListItemComponent } from './components/list/list-item/list-item.component';
+import {ListItemComponent} from './components/list/list-item/list-item.component';
 import {FormsModule} from '@angular/forms';
 import {MatRadioModule} from '@angular/material/radio';
+import {ListService} from './services/list.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatButtonModule,
     DragulaModule.forRoot()
   ],
-  providers: [fakeBackendProvider],
+  providers: [ListService, fakeBackendProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,6 +1,6 @@
 import {Component, NgZone, OnInit} from '@angular/core';
-import {ListItem, ListType} from '../../model/list-item';
-import {ListService} from '../../list.service';
+import {ListItemModel, ListType} from '../../model/list-item.model';
+import {ListService} from '../../services/list.service';
 import {DragulaService} from 'ng2-dragula';
 import {Subscription} from 'rxjs';
 
@@ -14,7 +14,7 @@ export class ListComponent implements OnInit {
 
   readonly quickDeleteTime = 100;
   readonly longDeleteTime = 500;
-  private  listItems: { 'todo': ListItem[], 'all': ListItem[] } = {'todo': [], 'all': []};
+  private listItems: { 'todo': ListItemModel[], 'all': ListItemModel[] } = {'todo': [], 'all': []};
   private subs: Subscription;
 
   constructor(private listService: ListService, protected _ngZone: NgZone,
@@ -40,6 +40,9 @@ export class ListComponent implements OnInit {
               element.listType = el.target.id === 'all' ? ListType.ALL : ListType.TODO;
               this.listItems[el.target.id].push(this.listItems[el.source.id].find((item) => item.id === elementId));
               this.listItems[el.source.id] = this.listItems[el.source.id].filter((item) => item.id !== elementId);
+              if (el.source.id !== el.target.id) {
+                this.saveList();
+              }
             }
           );
         })
@@ -52,27 +55,39 @@ export class ListComponent implements OnInit {
   }
 
 
-  removeFromAllList(listItem: ListItem) {
+  removeFromAllList(listItem: ListItemModel) {
     setTimeout(() => this.listItems['all'] = this.listItems['all'].filter(item => item.id !== listItem.id), this.quickDeleteTime);
   }
 
-  removeFromTodoList(listItem: ListItem) {
-    setTimeout(() => this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id), this.quickDeleteTime);
+  removeFromTodoList(listItem: ListItemModel) {
+    this.listService.sendListToServer(this.listItems['todo']);
+    setTimeout(() => {
+      this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id);
+      this.saveList();
+    }, this.quickDeleteTime);
   }
 
-  markItemAsCompleted(listItem: ListItem, time: number = this.longDeleteTime) {
-    setTimeout(() => this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id), time);
+  markItemAsCompleted(listItem: ListItemModel, time: number = this.longDeleteTime) {
+
+    setTimeout(() => {
+      this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id);
+      this.saveList();
+    }, time);
   }
 
-  moveItemToTodoList(listItem: ListItem) {
+  moveItemToTodoList(listItem: ListItemModel) {
     listItem.listType = ListType.TODO;
     this.listItems['todo'].push(listItem);
     this.listItems['all'] = this.listItems['all'].filter(item => item.id !== listItem.id);
+    this.saveList();
   }
 
   markAllItemsAsCompleted() {
-    this.listItems['todo'].forEach(item => {
-      this.markItemAsCompleted(item, this.quickDeleteTime);
-    });
+    this.listItems['todo'] = [];
+
+  }
+
+  saveList() {
+    this.listService.sendListToServer(this.listItems['todo']);
   }
 }

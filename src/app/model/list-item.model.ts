@@ -1,4 +1,4 @@
-export class ListItem {
+export class ListItemModel {
   id: string;
   description: string;
   isUnderEdit?: boolean;
