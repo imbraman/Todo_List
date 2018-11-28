@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ListItemComponent } from './list-item.component';
+import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatRadioModule} from "@angular/material";
+import {BrowserModule} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
 
 describe('ListItemComponent', () => {
   let component: ListItemComponent;
@@ -8,7 +11,14 @@ describe('ListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListItemComponent ]
+      declarations: [ ListItemComponent ],
+      imports:[ MatInputModule,
+        MatRadioModule,
+        MatButtonModule,
+        BrowserModule,
+        MatCardModule,
+        MatIconModule,
+        FormsModule]
     })
     .compileComponents();
   }));

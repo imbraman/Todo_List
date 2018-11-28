@@ -1,4 +1,4 @@
-<mat-card attr.id="{{model.id}}" class="task">
+<mat-card *ngIf="model" attr.id="{{model.id}}" class="task">
   <mat-radio-button class="task_left-action-button" *ngIf="!model.isUnderEdit && model.listType==='todo'"
                     (click)="markAsCompleted.emit(model)">
   </mat-radio-button>

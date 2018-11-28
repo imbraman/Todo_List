@@ -28,7 +28,7 @@ export class ListItemComponent implements OnInit {
   @ViewChild('inp') inp: ElementRef;
 
   ngOnInit() {
-    if (this.model.isUnderEdit) {
+    if (this.model && this.model.isUnderEdit) {
       this.renderer.invokeElementMethod(this.inp.nativeElement, 'focus');
     }
   }
@@ -36,7 +36,7 @@ export class ListItemComponent implements OnInit {
   editField() {
     this.model.isUnderEdit = true;
     // for some reason it stopped working without using setTimeout, so I've putted it to the end of actions stack
-    setTimeout(() => this.renderer.invokeElementMethod(this.inp.nativeElement, 'focus'), );
+    setTimeout(() => this.renderer.invokeElementMethod(this.inp.nativeElement, 'focus'),);
   }
 
   saveField() {

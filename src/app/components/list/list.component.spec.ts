@@ -1,6 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ListComponent } from './list.component';
+import {ListComponent} from './list.component';
+import {ListService} from "../../services/list.service";
+import {fakeBackendProvider} from "../../services/fake-backend";
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatIconModule,
+  MatInputModule,
+  MatRadioModule,
+  MatTabsModule
+} from "@angular/material";
+import {ListItemComponent} from "./list-item/list-item.component";
+import {BrowserModule} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import {DragulaService} from "ng2-dragula";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -8,9 +24,21 @@ describe('ListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListComponent ]
+      declarations: [ListComponent, ListItemComponent],
+      imports: [
+        HttpClientModule,
+        MatIconModule,
+        MatTabsModule,MatInputModule,
+        MatRadioModule,
+        MatButtonModule,
+        BrowserModule,
+        MatCardModule,
+        MatIconModule,
+        BrowserAnimationsModule,
+        FormsModule],
+      providers: [ListService, fakeBackendProvider, DragulaService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

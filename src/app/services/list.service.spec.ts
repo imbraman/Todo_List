@@ -1,9 +1,12 @@
-import { TestBed } from '@angular/core/testing';
-
-import { ListService } from './list.service';
+import {TestBed} from '@angular/core/testing';
+import {ListService} from './list.service';
+import {HttpClientModule} from "@angular/common/http";
 
 describe('ListService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [
+      HttpClientModule]
+  }));
 
   it('should be created', () => {
     const service: ListService = TestBed.get(ListService);

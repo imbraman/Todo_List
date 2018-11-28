@@ -1,12 +1,47 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import {ListComponent} from "./components/list/list.component";
+import {HeaderComponent} from "./components/header/header.component";
+import {ListItemComponent} from "./components/list/list-item/list-item.component";
+import {ListService} from "./services/list.service";
+import {fakeBackendProvider} from "./services/fake-backend";
+import {HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserModule} from "@angular/platform-browser";
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatIconModule,
+  MatInputModule,
+  MatRadioModule,
+  MatTabsModule
+} from "@angular/material";
+import {DragulaModule} from "ng2-dragula";
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        ListComponent,
+        HeaderComponent,
+        ListItemComponent
       ],
+      imports: [
+      HttpClientModule,
+      FormsModule,
+      BrowserAnimationsModule,
+      BrowserModule,
+      MatCardModule,
+      MatIconModule,
+      MatTabsModule,
+      MatInputModule,
+      MatRadioModule,
+      MatButtonModule,
+      DragulaModule.forRoot()
+    ],
+      providers: [ListService, fakeBackendProvider],
     }).compileComponents();
   }));
 
@@ -16,16 +51,4 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Angular'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('Angular');
-  });
-
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to Angular!');
-  });
 });
