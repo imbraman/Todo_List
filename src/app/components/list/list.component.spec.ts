@@ -5,7 +5,7 @@ import {ListService} from "../../services/list.service";
 import {fakeBackendProvider} from "../../services/fake-backend";
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatDialogModule,
   MatIconModule,
   MatInputModule,
   MatRadioModule,
@@ -34,6 +34,7 @@ describe('ListComponent', () => {
         BrowserModule,
         MatCardModule,
         MatIconModule,
+        MatDialogModule,
         BrowserAnimationsModule,
         FormsModule],
       providers: [ListService, fakeBackendProvider, DragulaService]

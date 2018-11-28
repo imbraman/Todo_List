@@ -29,7 +29,12 @@ export class ListItemComponent implements OnInit {
 
   ngOnInit() {
     if (this.model && this.model.isUnderEdit) {
-      this.renderer.invokeElementMethod(this.inp.nativeElement, 'focus');
+      setTimeout(() => {
+          if (this.inp) {
+            this.renderer.invokeElementMethod(this.inp.nativeElement, 'focus')
+          }
+        }
+      );
     }
   }
 

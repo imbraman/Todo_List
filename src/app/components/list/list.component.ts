@@ -1,12 +1,14 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ListItemModel, ListType} from '../../model/list-item.model';
 import {ListService} from '../../services/list.service';
 import {DragulaService} from 'ng2-dragula';
 import {Subscription} from 'rxjs';
+import {MatDialog} from "@angular/material";
+import {WarningDialogComponent} from "./dialogs/warning-dialog/warning-dialog.component";
 
 
 @Component({
-  selector: 'app-task-list',
+  selector: 'app-items-list',
   templateUrl: './list.component.html'
 })
 export class ListComponent implements OnInit {
@@ -16,9 +18,13 @@ export class ListComponent implements OnInit {
   readonly longDeleteTime = 500;
   private listItems: { 'todo': ListItemModel[], 'all': ListItemModel[] } = {'todo': [], 'all': []};
   private subs: Subscription;
+  private todoListLength = 5;
+
+
+  @ViewChild('dialog') child: MatDialog;
 
   constructor(private listService: ListService, protected _ngZone: NgZone,
-              private dragulaService: DragulaService) {
+              private dragulaService: DragulaService, public dialog: MatDialog) {
     this.listService.getListItems().subscribe(items => {
       this.listItems['todo'] = items.map(item => {
         item.listType = ListType.TODO;
@@ -36,12 +42,9 @@ export class ListComponent implements OnInit {
           this._ngZone.run(() => {
               if (el.source.id !== el.target.id) {
                 // this actions I'm doing at least to make work approach with ng-templates
-                const elementId = el.el.querySelector('.task').id;
+                const elementId = el.el.querySelector('.list-item').id;
                 const element = this.listItems[el.source.id].find((item) => item.id === elementId);
-                element.listType = el.target.id === 'all' ? ListType.ALL : ListType.TODO;
-                this.listItems[el.target.id].push(this.listItems[el.source.id].find((item) => item.id === elementId));
-                this.listItems[el.source.id] = this.listItems[el.source.id].filter((item) => item.id !== elementId);
-                this.saveList();
+                el.target.id === 'all' ? this.moveItemToAll(element) : this.moveItemToTodoList(element);
               }
             }
           );
@@ -76,15 +79,33 @@ export class ListComponent implements OnInit {
   }
 
   moveItemToTodoList(listItem: ListItemModel) {
-    listItem.listType = ListType.TODO;
-    this.listItems['todo'].push(listItem);
-    this.listItems['all'] = this.listItems['all'].filter(item => item.id !== listItem.id);
+    if (this.listItems['todo'].length < this.todoListLength) {
+      listItem.listType = ListType.TODO;
+      this.listItems['todo'].push(listItem);
+      this.listItems['all'] = this.listItems['all'].filter(item => item.id !== listItem.id);
+      this.saveList();
+    } else {
+      this.dragulaService.find('MAIN').drake.cancel(true);
+      this.showWarning();
+    }
+  }
+
+  moveItemToAll(listItem: ListItemModel) {
+    listItem.listType = ListType.ALL;
+    this.listItems['all'].push(listItem);
+    this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id);
     this.saveList();
   }
 
   markAllItemsAsCompleted() {
     this.listItems['todo'] = [];
 
+  }
+
+  showWarning() {
+    this.dialog.open(WarningDialogComponent, {
+      width: '300px'
+    });
   }
 
   saveList() {

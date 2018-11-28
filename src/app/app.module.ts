@@ -17,12 +17,16 @@ import {ListItemComponent} from './components/list/list-item/list-item.component
 import {FormsModule} from '@angular/forms';
 import {MatRadioModule} from '@angular/material/radio';
 import {ListService} from './services/list.service';
+import {MatDialogModule} from '@angular/material/dialog';
+import {WarningDialogComponent} from './components/list/dialogs/warning-dialog/warning-dialog.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListComponent,
     HeaderComponent,
+    WarningDialogComponent,
     ListItemComponent
   ],
   imports: [
@@ -36,8 +40,11 @@ import {ListService} from './services/list.service';
     MatInputModule,
     MatRadioModule,
     MatButtonModule,
+    MatDialogModule,
+    MatTooltipModule,
     DragulaModule.forRoot()
   ],
+  entryComponents: [WarningDialogComponent],
   providers: [ListService, fakeBackendProvider],
   bootstrap: [AppComponent]
 })

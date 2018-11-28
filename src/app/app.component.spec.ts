@@ -1,5 +1,5 @@
-import { TestBed, async } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import {TestBed, async} from '@angular/core/testing';
+import {AppComponent} from './app.component';
 import {ListComponent} from "./components/list/list.component";
 import {HeaderComponent} from "./components/header/header.component";
 import {ListItemComponent} from "./components/list/list-item/list-item.component";
@@ -9,9 +9,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BrowserModule} from "@angular/platform-browser";
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatDialogModule,
   MatIconModule,
   MatInputModule,
   MatRadioModule,
@@ -29,18 +30,21 @@ describe('AppComponent', () => {
         ListItemComponent
       ],
       imports: [
-      HttpClientModule,
-      FormsModule,
-      BrowserAnimationsModule,
-      BrowserModule,
-      MatCardModule,
-      MatIconModule,
-      MatTabsModule,
-      MatInputModule,
-      MatRadioModule,
-      MatButtonModule,
-      DragulaModule.forRoot()
-    ],
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        MatCardModule,
+        MatIconModule,
+        MatTabsModule,
+        MatInputModule,
+        MatRadioModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatTooltipModule,
+        DragulaModule.forRoot()
+      ],
       providers: [ListService, fakeBackendProvider],
     }).compileComponents();
   }));

@@ -1,4 +1,4 @@
-app-task-list {
+app-items-list {
   touch-action: none;
   top: 60px;
   position: absolute;
@@ -10,7 +10,7 @@ app-task-list {
   overflow-x: hidden;
   background-color: @base-background-color;
 
-  .tasks-container {
+  .items-list-container {
     &._mobile {
       display: none;
     }
@@ -60,7 +60,7 @@ app-task-list {
 
 
     &._all {
-      background-color: rgba(118, 193, 186, 0.14);
+      background-color: rgba(118, 193, 186, 0.28)
     }
 
     &._today {
@@ -69,20 +69,25 @@ app-task-list {
   }
 }
 
-
+mat-tooltip-component{
+  display: block;
+}
 
 @media (max-width: 767px) {
-  app-task-list {
+  mat-tooltip-component{
+    display: none;
+  }
+  app-items-list {
     .mat-tab {
       height: 100vh !important;
     }
 
-    .tasks-container {
+    .items-list-container {
       display: none;
 
       &_add-button {
         position: fixed;
-        bottom: 0px;
+        bottom: 0;
       }
 
       &._mobile {
