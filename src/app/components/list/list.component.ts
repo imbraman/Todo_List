@@ -1,21 +1,18 @@
-import {Component, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ListItemModel, ListType} from '../../model/list-item.model';
 import {ListService} from '../../services/list.service';
 import {DragulaService} from 'ng2-dragula';
 import {Subscription} from 'rxjs';
-import {MatDialog} from "@angular/material";
-import {WarningDialogComponent} from "./dialogs/warning-dialog/warning-dialog.component";
+import {MatDialog} from '@angular/material';
+import {WarningDialogComponent} from './dialogs/warning-dialog/warning-dialog.component';
 
 
 @Component({
   selector: 'app-items-list',
   templateUrl: './list.component.html'
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
 
-
-  readonly quickDeleteTime = 100;
-  readonly longDeleteTime = 500;
   private listItems: { 'todo': ListItemModel[], 'all': ListItemModel[] } = {'todo': [], 'all': []};
   private subs: Subscription;
   private todoListLength = 5;
@@ -53,29 +50,26 @@ export class ListComponent implements OnInit {
     });
   }
 
+
+
   addItem() {
     this.listItems['all'].push(this.listService.createNewListItem());
   }
 
 
   removeFromAllList(listItem: ListItemModel) {
-    setTimeout(() => this.listItems['all'] = this.listItems['all'].filter(item => item.id !== listItem.id), this.quickDeleteTime);
+    this.listItems['all'] = this.listItems['all'].filter(item => item.id !== listItem.id);
   }
 
   removeFromTodoList(listItem: ListItemModel) {
     this.listService.sendListToServer(this.listItems['todo']);
-    setTimeout(() => {
-      this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id);
-      this.saveList();
-    }, this.quickDeleteTime);
+    this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id);
+    this.saveList();
   }
 
-  markItemAsCompleted(listItem: ListItemModel, time: number = this.longDeleteTime) {
-
-    setTimeout(() => {
-      this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id);
-      this.saveList();
-    }, time);
+  markItemAsCompleted(listItem: ListItemModel) {
+    this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id);
+    this.saveList();
   }
 
   moveItemToTodoList(listItem: ListItemModel) {
@@ -110,5 +104,9 @@ export class ListComponent implements OnInit {
 
   saveList() {
     this.listService.sendListToServer(this.listItems['todo']);
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

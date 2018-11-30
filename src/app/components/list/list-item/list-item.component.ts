@@ -1,14 +1,37 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer, ViewChild} from '@angular/core';
 import {ListItemModel, ListType} from '../../../model/list-item.model';
+import {Subject, Subscription, timer} from 'rxjs';
+import {debounce, debounceTime, throttleTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-item',
   templateUrl: './list-item.component.html'
 })
-export class ListItemComponent implements OnInit {
+export class ListItemComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer) {
+    this.subs.add(this.markAsCompletedDebouncer.pipe(
+      debounceTime(500)
+    ).subscribe(
+      (value) => {
+        this.markAsCompleted.emit(value);
+      },
+      (error) => {
+        console.log(error);
+      }
+    ))
+      .add(this.deleteItemDebouncer.pipe(
+        debounceTime(100)
+      ).subscribe(
+        (value) => {
+          this.deleteItem.emit(value);
+        },
+        (error) => {
+          console.log(error);
+        }
+      ));
   }
+
 
   @Input()
   model: ListItemModel;
@@ -25,23 +48,25 @@ export class ListItemComponent implements OnInit {
   @Output()
   public moveToTodoList: EventEmitter<ListItemModel> = new EventEmitter<ListItemModel>();
 
-  @ViewChild('inp') inp: ElementRef;
+  deleteItemDebouncer = new Subject<ListItemModel>();
+
+  markAsCompletedDebouncer = new Subject<ListItemModel>();
+
+  subs = new Subscription();
+
+  @ViewChild('inp')
+  set inp(inp: ElementRef) {
+    if (inp && inp.nativeElement) {
+      // we are moving it to the end of stack, because otherwise it works but throws error in console
+      setTimeout(() => inp.nativeElement.focus());
+    }
+  }
 
   ngOnInit() {
-    if (this.model && this.model.isUnderEdit) {
-      setTimeout(() => {
-          if (this.inp) {
-            this.renderer.invokeElementMethod(this.inp.nativeElement, 'focus')
-          }
-        }
-      );
-    }
   }
 
   editField() {
     this.model.isUnderEdit = true;
-    // for some reason it stopped working without using setTimeout, so I've putted it to the end of actions stack
-    setTimeout(() => this.renderer.invokeElementMethod(this.inp.nativeElement, 'focus'),);
   }
 
   saveField() {
@@ -49,5 +74,7 @@ export class ListItemComponent implements OnInit {
     this.saveItem.emit(this.model);
   }
 
-
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 }
