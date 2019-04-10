@@ -5,6 +5,7 @@ import {DragulaService} from 'ng2-dragula';
 import {Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material';
 import {WarningDialogComponent} from './dialogs/warning-dialog/warning-dialog.component';
+import {ListModel} from '../../model/list.model';
 
 
 @Component({
@@ -16,17 +17,16 @@ export class ListComponent implements OnInit, OnDestroy {
   private listItems: { 'todo': ListItemModel[], 'all': ListItemModel[] } = {'todo': [], 'all': []};
   private subs: Subscription;
   private todoListLength = 5;
+  private list: ListModel;
 
 
   @ViewChild('dialog') child: MatDialog;
 
   constructor(private listService: ListService, protected _ngZone: NgZone,
               private dragulaService: DragulaService, public dialog: MatDialog) {
-    this.listService.getListItems().subscribe(items => {
-      this.listItems['todo'] = items.map(item => {
-        item.listType = ListType.TODO;
-        return item;
-      });
+    this.listService.getList().subscribe((list: ListModel) => {
+      this.list = list;
+      this.listItems['todo'] = list.items;
     });
   }
 
@@ -51,7 +51,6 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
 
-
   addItem() {
     this.listItems['all'].push(this.listService.createNewListItem());
   }
@@ -62,7 +61,6 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   removeFromTodoList(listItem: ListItemModel) {
-    this.listService.sendListToServer(this.listItems['todo']);
     this.listItems['todo'] = this.listItems['todo'].filter(item => item.id !== listItem.id);
     this.saveList();
   }
@@ -103,10 +101,18 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   saveList() {
-    this.listService.sendListToServer(this.listItems['todo']);
+    if (this.list) {
+      this.list.items = this.listItems['todo'];
+      this.listService.updateList(this.list);
+    } else {
+      this.listService.createList(this.listItems['todo']).subscribe((list: ListModel) => {
+        this.list = list;
+      });
+    }
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
+    this.dragulaService.destroy('MAIN');
   }
 }

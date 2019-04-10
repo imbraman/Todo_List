@@ -1,5 +1,9 @@
 <nav class="navbar">
   <mat-icon class="navbar-icon">list</mat-icon>
   <div class="navbar-title">{{title}}</div>
+  <div class="navbar-right">
+    <div *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Sign in</a></div>
+    <div *ngIf="auth.isLoggedIn()"><a (click)="auth.logout()">Logout</a></div>
+  </div>
   <!-- logo -->
 </nav>

@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ListComponent} from './list.component';
 import {ListService} from "../../services/list.service";
-import {fakeBackendProvider} from "../../services/fake-backend";
+import {fakeBackendProvider} from "../../services/request-interceptor";
 import {
   MatButtonModule,
   MatCardModule, MatDialogModule,

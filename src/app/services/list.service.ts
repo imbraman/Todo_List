@@ -7,6 +7,7 @@ import * as uuid from 'uuid';
 import {ListModel} from '../model/list.model';
 import * as dateFormat from 'dateFormat';
 import {map} from 'rxjs/operators';
+import {AuthenticationService} from './aunthetication.service';
 
 
 @Injectable({
@@ -14,18 +15,25 @@ import {map} from 'rxjs/operators';
 })
 export class ListService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthenticationService) {
   }
 
-  getListItems(): Observable<ListItemModel[]> {
+  getList(): Observable<ListModel> {
     const now = new Date();
     const currentDay = dateFormat(now, 'dddd, mmmm dS');
     // we are checking here whether list of the tasks is actual for today
-    return this.http.get<ListModel>(`${environment.apiUrl}/items`)
-      .pipe(map((list) => list.listDate === currentDay ? list.items : []));
+    return this.http.get<ListModel>(`${environment.apiUrl}/api/list`)
+      .pipe(map((response: any) => {
+        const list = new ListModel(response._id, response.listDay, response.items, response.lastModified);
+        list.items.forEach(item => {
+          item.listType = ListType.TODO;
+          return item;
+        });
+        return list.listDay === currentDay ? list : null;
+      }));
   }
 
-  sendListToServer(listItems: ListItemModel[]) {
+  createList(listItems: ListItemModel[]): Observable<ListModel> {
     const now = new Date();
     const items: ListItemModel[] = listItems.map((item: ListItemModel) => {
       const element = Object.assign({}, item);
@@ -34,11 +42,16 @@ export class ListService {
       return element;
     });
     const list: ListModel = {
-      listDate: dateFormat(now, 'dddd, mmmm dS'),
+      listDay: dateFormat(now, 'dddd, mmmm dS'),
       items: items,
-      lastModified: dateFormat(now, 'dddd, mmmm dS, yyyy, h:MM:ss TT')
     };
-    this.http.post<any>(`${environment.apiUrl}/items`, list).subscribe();
+    return this.http.post<any>(`${environment.apiUrl}/api/list`, list);
+  }
+
+  updateList(list: ListModel) {
+    this.http.put<any>(`${environment.apiUrl}/api/list`, list).subscribe((response: ListModel) => {
+      list.lastModified = response.lastModified;
+    });
   }
 
   createNewListItem(): ListItemModel {

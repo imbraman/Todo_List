@@ -4,7 +4,7 @@ import {ListComponent} from "./components/list/list.component";
 import {HeaderComponent} from "./components/header/header.component";
 import {ListItemComponent} from "./components/list/list-item/list-item.component";
 import {ListService} from "./services/list.service";
-import {fakeBackendProvider} from "./services/fake-backend";
+import {fakeBackendProvider} from "./services/request-interceptor";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
