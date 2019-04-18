@@ -26,7 +26,9 @@ export class ListComponent implements OnInit, OnDestroy {
               private dragulaService: DragulaService, public dialog: MatDialog) {
     this.listService.getList().subscribe((list: ListModel) => {
       this.list = list;
-      this.listItems['todo'] = list.items;
+      if (list) {
+        this.listItems['todo'] = list.items;
+      }
     });
   }
 

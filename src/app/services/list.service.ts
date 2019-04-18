@@ -20,16 +20,24 @@ export class ListService {
 
   getList(): Observable<ListModel> {
     const now = new Date();
-    const currentDay = dateFormat(now, 'dddd, mmmm dS');
+    const currentDay = dateFormat(now, 'dd/mm/yyyy');
     // we are checking here whether list of the tasks is actual for today
-    return this.http.get<ListModel>(`${environment.apiUrl}/api/list`)
+    return this.http.get<ListModel>(`${environment.apiUrl}/api/list`, {
+      params: {
+        listDay: currentDay
+      }
+    })
       .pipe(map((response: any) => {
-        const list = new ListModel(response._id, response.listDay, response.items, response.lastModified);
-        list.items.forEach(item => {
-          item.listType = ListType.TODO;
-          return item;
-        });
-        return list.listDay === currentDay ? list : null;
+        if (response) {
+          const list = new ListModel(response._id, response.listDay, response.items, response.lastModified);
+          list.items.forEach(item => {
+            item.listType = ListType.TODO;
+            return item;
+          });
+          return list;
+        } else {
+          return null;
+        }
       }));
   }
 
@@ -42,7 +50,7 @@ export class ListService {
       return element;
     });
     const list: ListModel = {
-      listDay: dateFormat(now, 'dddd, mmmm dS'),
+      listDay: dateFormat(now, 'dd/mm/yyyy'),
       items: items,
     };
     return this.http.post<any>(`${environment.apiUrl}/api/list`, list);
